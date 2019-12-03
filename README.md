@@ -1,2 +1,1 @@
-# mips
-Microprocessor Systems
+# Microprocessor Systems
