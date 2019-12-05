@@ -110,14 +110,14 @@ void main()
 {
 	digits[0] = digits[1] = digits[2] = digits[3] = 0;
 	
-	RCC_APB2ENR = (1 << 11) | (1 << 4) | 1;
-	GPIOC_CRL = 0x22222222;
+	RCC_APB2ENR = (1 << 11) | (1 << 4) | 1;	// timer, ioportc, afio
+	GPIOC_CRL = 0x22222222;		// sve output
 	GPIOC_CRH &= 0xFF000000;
-	GPIOC_CRH |= 0x00822222;
+	GPIOC_CRH |= 0x00822222;	// 13-input, ostalo output
 	
-	AFIO_EXTICR4 = 0x0020;
-	NVIC_ISER0 = (1 << 25);
-	NVIC_ISER1 = 0x100;
+	AFIO_EXTICR4 = 0x0020;		// exti13 alternativna funkcija
+	NVIC_ISER0 = (1 << 25);		// tajmer
+	NVIC_ISER1 = 0x100;			// exti13 nvic enable
 	
 	TIM1_PSC = 7999;		// 1kHz
 	TIM1_ARR = 10;			// 1000 ms
