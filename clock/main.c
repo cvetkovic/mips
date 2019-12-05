@@ -37,7 +37,7 @@ uint8_t shownDigit = 0;
 
 uint16_t ticks = 0;
 
-void exti_1_handler()
+void exti_13_handler()
 {
 	if ((EXTI_PR & 0x2000) != 0)
 	{

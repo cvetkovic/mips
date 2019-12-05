@@ -5,7 +5,7 @@
 
 .extern _main_stack_pointer
 .extern main
-.extern exti_1_handler
+.extern exti_13_handler
 .extern timer_1_update_handler
 .extern _lma_data_start
 .extern _vma_data_start
@@ -21,7 +21,7 @@
 .rept 14
 	.word default_handler
 .endr
-.word exti_1_handler
+.word exti_13_handler
 .rept 27
 	.word default_handler
 .endr
