@@ -10,7 +10,7 @@ SECTIONS
 {
 	.output_vector_table :
 	{
-		*(.vector_table)
+		*(.vector_table*)
 	} > FLASH
 	
 	.output_text :

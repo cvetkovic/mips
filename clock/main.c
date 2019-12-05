@@ -7,6 +7,7 @@
 #define GPIOC_ODR		(*((uint32_t*)(0x40011000 + 0x0C)))
 
 #define NVIC_ISER0		(*((uint32_t*)(0xE000E100 + 0x00)))
+#define NVIC_ISER1		(*((uint32_t*)(0xE000E100 + 0x04)))
 
 #define TIM1_CR1		(*((uint32_t*)(0x40012C00 + 0x00)))
 #define TIM1_DIER		(*((uint32_t*)(0x40012C00 + 0x0C)))
@@ -18,7 +19,7 @@
 
 #define EXTI_IMR		(*((uint32_t*)(0x40010400 + 0x00)))
 #define EXTI_RTSR		(*((uint32_t*)(0x40010400 + 0x08)))
-#define EXTI_PR			(*((uint32_t*)(0x40010400 + 0x2C)))
+#define EXTI_PR			(*((uint32_t*)(0x40010400 + 0x14)))
 
 uint8_t encoded[] = { 0x3F,
 					  0x06,
@@ -41,7 +42,8 @@ void exti_1_handler()
 	if ((EXTI_PR & 0x2000) != 0)
 	{
 		EXTI_PR = 0x2000;
-		digits[0] = 5;
+		digits[0] = digits[1] = digits[2] = digits[3] = 0;
+		ticks = 0;
 	}
 }
 
@@ -108,13 +110,14 @@ void main()
 {
 	digits[0] = digits[1] = digits[2] = digits[3] = 0;
 	
-	RCC_APB2ENR = (1 << 11) | (1 << 4);
+	RCC_APB2ENR = (1 << 11) | (1 << 4) | 1;
 	GPIOC_CRL = 0x22222222;
 	GPIOC_CRH &= 0xFF000000;
 	GPIOC_CRH |= 0x00822222;
 	
 	AFIO_EXTICR4 = 0x0020;
-	NVIC_ISER0 = (1 << 25) | (1 << 7);
+	NVIC_ISER0 = (1 << 25);
+	NVIC_ISER1 = 0x100;
 	
 	TIM1_PSC = 7999;		// 1kHz
 	TIM1_ARR = 10;			// 1000 ms
@@ -124,7 +127,7 @@ void main()
 		
 	EXTI_IMR = 0x2000;
 	EXTI_RTSR = 0x2000;
-	//EXTI_PR = 0x2000;
+	EXTI_PR = 0x2000;
 	
 	while (1);
 }
