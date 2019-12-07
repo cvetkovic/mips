@@ -10,17 +10,19 @@ SECTIONS
 {
 	.output_vector_table :
 	{
-		*(.vector_table*)
+		*(.vector_table)
 	} > FLASH
 	
 	.output_text :
 	{
+		*(.text)
 		*(.text*)
 	} > FLASH
 	
 	.output_data :
 	{
 		_vma_data_start = .;
+		*(.data)
 		*(.data*)
 		_vma_data_end = .;
 	} > SRAM AT > FLASH
@@ -29,6 +31,7 @@ SECTIONS
 	
 	.output_bss :
 	{
+		*(.bss)
 		*(.bss*)
 	} > SRAM
 }

@@ -5,11 +5,16 @@
 
 .extern _main_stack_pointer
 .extern main
-.extern exti_13_handler
-.extern timer_1_update_handler
 .extern _lma_data_start
 .extern _vma_data_start
 .extern _vma_data_end
+.extern timer_handler
+.extern ext_handler
+
+.weak timer_handler
+.thumb_set timer_handler, default_handler
+.weak ext_handler
+.thumb_set ext_handler, default_handler
 
 .section .vector_table, "a"
 .word _main_stack_pointer
@@ -17,20 +22,20 @@
 .rept 39
 	.word default_handler
 .endr
-.word timer_1_update_handler
+.word timer_handler
 .rept 14
 	.word default_handler
 .endr
-.word exti_13_handler
+.word ext_handler
 .rept 27
 	.word default_handler
 .endr
 
-.section .text.default_handler:
+.section .text.default_handler
 .type default_handler, %function
 default_handler:
 	b default_handler
-	
+
 .section .text.reset_handler:
 .type reset_handler, %function
 reset_handler:
@@ -44,10 +49,12 @@ copy_loop:
 	ldr r3, [r0], #4
 	str r3, [r1], #4
 	cmp r1, r2
-	bne copy_loop
-
+	blo copy_loop
+	
 program:
 	bl main
 	
-loop:
-	b loop
+infinite_loop:
+	b infinite_loop
+	
+	
