@@ -31,7 +31,7 @@ void ext_handler()
 	if ((EXTI_PR & 0x2000) != 0)
 	{
 		EXTI_PR = 0;
-		TIM1_CNT = 10; // OVDE TREBA DA SE COUNTER TIMER-A RESETUJE
+		//TIM1_CNT = 10; // OVDE TREBA DA SE COUNTER TIMER-A RESETUJE
 		
 		for (int i = 0; i < 4; i++)
 			digits[i] = 0;
